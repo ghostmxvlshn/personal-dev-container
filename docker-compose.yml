@@ -1,0 +1,23 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    container_name: personal-dev
+    tty: true
+    stdin_open: true
+    working_dir: /workspace
+    volumes:
+      - ./:/workspace
+      - personal-dev-home:/home/dev
+    ports:
+      - "5000:5000"
+      - "5173:5173"
+      - "8080:8080"
+    environment:
+      - GIT_USER_NAME=${GIT_USER_NAME:-}
+      - GIT_USER_EMAIL=${GIT_USER_EMAIL:-}
+    command: zsh
+
+volumes:
+  personal-dev-home:
