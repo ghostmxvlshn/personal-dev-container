@@ -6,13 +6,30 @@ ARG USER_GID=${USER_UID}
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Pinned CLI/tool versions for reproducible builds
+ARG OPENCODE_VERSION=1.2.27
+ARG CODEX_VERSION=0.116.0
+ARG COPILOT_VERSION=1.0.10
+ARG PNPM_VERSION=10.32.1
+ARG TYPESCRIPT_VERSION=5.9.3
+ARG TSX_VERSION=4.21.0
+ARG ESLINT_VERSION=10.1.0
+ARG PRETTIER_VERSION=3.8.1
+
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-      zsh tmux git curl wget jq unzip zip ca-certificates sudo \
-      fd-find nodejs npm gh zoxide \
+      zsh tmux git curl wget jq unzip zip ca-certificates sudo gnupg \
+      fd-find gh zoxide \
       zsh-autosuggestions zsh-syntax-highlighting \
       build-essential gettext libssl-dev libcurl4-gnutls-dev libexpat1-dev zlib1g-dev; \
+    \
+    # Node.js 22 LTS (NodeSource)
+    mkdir -p /etc/apt/keyrings; \
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg; \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_22.x nodistro main" > /etc/apt/sources.list.d/nodesource.list; \
+    apt-get update; \
+    apt-get install -y --no-install-recommends nodejs; \
     \
     # Git (latest stable tag from upstream)
     GIT_VERSION="$(git ls-remote --tags --refs https://github.com/git/git.git | awk -F/ '/refs\/tags\/v[0-9]+\.[0-9]+\.[0-9]+$/{print $3}' | sed 's/^v//' | sort -V | tail -n1)"; \
@@ -43,11 +60,11 @@ RUN set -eux; \
     tar -xzf /tmp/fzf.tar.gz -C /usr/local/bin fzf; \
     chmod +x /usr/local/bin/fzf; \
     \
-    # CLIs + TypeScript baseline tooling
+    # CLIs + TypeScript baseline tooling (pinned)
     npm install -g \
-      opencode-ai@latest @openai/codex@latest @github/copilot@latest \
-      pnpm@latest typescript@latest tsx@latest @types/node@latest \
-      eslint@latest prettier@latest; \
+      opencode-ai@${OPENCODE_VERSION} @openai/codex@${CODEX_VERSION} @github/copilot@${COPILOT_VERSION} \
+      pnpm@${PNPM_VERSION} typescript@${TYPESCRIPT_VERSION} tsx@${TSX_VERSION} \
+      eslint@${ESLINT_VERSION} prettier@${PRETTIER_VERSION}; \
     \
     # Cleanup
     rm -rf /var/lib/apt/lists/* /tmp/*
@@ -56,6 +73,9 @@ RUN if ! getent group ${USER_GID} >/dev/null; then groupadd --gid ${USER_GID} ${
     && if ! id -u ${USERNAME} >/dev/null 2>&1; then useradd --uid ${USER_UID} --gid ${USER_GID} -m -s /usr/bin/zsh ${USERNAME}; fi \
     && echo "${USERNAME} ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} \
     && chmod 0440 /etc/sudoers.d/${USERNAME}
+
+# Make .NET global tools available in all shells/processes
+ENV PATH="/home/dev/.dotnet/tools:${PATH}"
 
 USER ${USERNAME}
 WORKDIR /workspace

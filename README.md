@@ -7,7 +7,7 @@ Portable personal development environment with .NET 10, Zsh, tmux, and practical
 - Base image: `mcr.microsoft.com/dotnet/sdk:10.0`
 - Shell/tools: `zsh`, `tmux`, `git` (latest), `curl`, `jq`, `ripgrep` (latest), `fd`, `fzf` (latest), `zoxide`, `neovim` (latest)
 - Zsh UX: `zsh-autosuggestions`, `zsh-syntax-highlighting`, `fzf` key-bindings/completion
-- CLI/runtime: `nodejs`, `npm`, `pnpm`, `gh`, `opencode`, `codex`, `copilot` (global)
+- CLI/runtime: `nodejs` (22 LTS), `npm`, `pnpm`, `gh`, `opencode`, `codex`, `copilot` (global, pinned versions)
 - .NET tooling: `aspire` CLI (installed as user global .NET tool)
 - TypeScript baseline: `typescript`, `tsx`, `@types/node`, `eslint`, `prettier` (global)
 - Non-root user: `dev`
@@ -129,6 +129,11 @@ eslint --version
 prettier --version
 git config --global --list
 ```
+
+## Versioning strategy
+
+- Core npm CLIs are pinned in Dockerfile args for reproducibility.
+- Weekly CI build still runs to detect upstream breakages for "latest" binary pulls (git/neovim/ripgrep/fzf).
 
 ## CI build check
 

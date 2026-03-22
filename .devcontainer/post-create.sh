@@ -50,11 +50,12 @@ if ! grep -q "\.dotnet/tools" ~/.zshrc 2>/dev/null; then
   } >> ~/.zshrc
 fi
 
-# Install/update Aspire CLI for the dev user
+# Install/update Aspire CLI for the dev user (pinned)
+ASPIRE_VERSION="13.1.3"
 if command -v aspire >/dev/null 2>&1; then
-  dotnet tool update --global aspire.cli >/dev/null 2>&1 || true
+  dotnet tool update --global aspire.cli --version "${ASPIRE_VERSION}" >/dev/null 2>&1 || true
 else
-  dotnet tool install --global aspire.cli >/dev/null 2>&1 || true
+  dotnet tool install --global aspire.cli --version "${ASPIRE_VERSION}" >/dev/null 2>&1 || true
 fi
 
 echo "post-create complete ✅"
