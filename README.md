@@ -8,6 +8,7 @@ Portable personal development environment with .NET 10, Zsh, tmux, and practical
 - Shell/tools: `zsh`, `tmux`, `git` (latest), `curl`, `jq`, `ripgrep` (latest), `fd`, `fzf` (latest), `zoxide`, `neovim` (latest)
 - Zsh UX: `zsh-autosuggestions`, `zsh-syntax-highlighting`, `fzf` key-bindings/completion
 - CLI/runtime: `nodejs`, `npm`, `pnpm`, `gh`, `opencode`, `codex`, `copilot` (global)
+- .NET tooling: `aspire` CLI (installed as user global .NET tool)
 - TypeScript baseline: `typescript`, `tsx`, `@types/node`, `eslint`, `prettier` (global)
 - Non-root user: `dev`
 - VS Code Dev Containers support
@@ -120,6 +121,7 @@ gh --version
 opencode --version
 codex --version
 copilot --version
+aspire --version
 pnpm --version
 tsc --version
 tsx --version

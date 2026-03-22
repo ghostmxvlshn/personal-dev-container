@@ -41,4 +41,20 @@ if ! grep -q "zsh-autosuggestions.zsh" ~/.zshrc 2>/dev/null; then
   } >> ~/.zshrc
 fi
 
+# Ensure dotnet global tools path
+if ! grep -q "\.dotnet/tools" ~/.zshrc 2>/dev/null; then
+  {
+    echo ""
+    echo "# .NET global tools"
+    echo "export PATH=\"$HOME/.dotnet/tools:$PATH\""
+  } >> ~/.zshrc
+fi
+
+# Install/update Aspire CLI for the dev user
+if command -v aspire >/dev/null 2>&1; then
+  dotnet tool update --global aspire.cli >/dev/null 2>&1 || true
+else
+  dotnet tool install --global aspire.cli >/dev/null 2>&1 || true
+fi
+
 echo "post-create complete ✅"

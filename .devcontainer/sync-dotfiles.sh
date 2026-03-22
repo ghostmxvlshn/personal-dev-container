@@ -47,6 +47,16 @@ if [[ -f "${HOME}/.zshrc" ]] && ! grep -q "zoxide init zsh" "${HOME}/.zshrc"; th
   log "Appended zoxide init to .zshrc"
 fi
 
+# Ensure dotnet global tools path exists in active zshrc
+if [[ -f "${HOME}/.zshrc" ]] && ! grep -q "\.dotnet/tools" "${HOME}/.zshrc"; then
+  {
+    echo ""
+    echo "# .NET global tools"
+    echo "export PATH=\"$HOME/.dotnet/tools:$PATH\""
+  } >> "${HOME}/.zshrc"
+  log "Appended .NET global tools path to .zshrc"
+fi
+
 # Ensure zsh autocomplete/highlighting survives dotfiles sync
 if [[ -f "${HOME}/.zshrc" ]] && ! grep -q "zsh-autosuggestions.zsh" "${HOME}/.zshrc"; then
   {
