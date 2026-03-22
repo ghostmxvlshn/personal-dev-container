@@ -6,6 +6,7 @@ doctor:
 	@echo "Checking env vars..."
 	@if [ -n "$$GIT_USER_NAME" ]; then echo "  GIT_USER_NAME=✅"; else echo "  GIT_USER_NAME=⚠️ (optional, not set)"; fi
 	@if [ -n "$$GIT_USER_EMAIL" ]; then echo "  GIT_USER_EMAIL=✅"; else echo "  GIT_USER_EMAIL=⚠️ (optional, not set)"; fi
+	@echo "Tip: after build, verify toolchain in container: git/rg/fzf/nvim/opencode/codex/copilot"
 
 build:
 	docker compose build
