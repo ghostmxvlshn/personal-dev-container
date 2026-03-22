@@ -11,6 +11,7 @@ RUN set -eux; \
     apt-get install -y --no-install-recommends \
       zsh tmux curl wget jq unzip zip ca-certificates sudo \
       fd-find nodejs npm gh zoxide \
+      zsh-autosuggestions zsh-syntax-highlighting \
       build-essential gettext libssl-dev libcurl4-gnutls-dev libexpat1-dev zlib1g-dev; \
     \
     # Git (latest)

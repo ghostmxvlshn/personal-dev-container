@@ -29,4 +29,16 @@ if ! grep -q "zoxide init zsh" ~/.zshrc 2>/dev/null; then
   } >> ~/.zshrc
 fi
 
+# Ensure useful zsh completion/plugins are loaded
+if ! grep -q "zsh-autosuggestions.zsh" ~/.zshrc 2>/dev/null; then
+  {
+    echo ""
+    echo "# zsh quality-of-life"
+    echo "source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    echo "[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh"
+    echo "[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh"
+  } >> ~/.zshrc
+fi
+
 echo "post-create complete ✅"

@@ -6,6 +6,7 @@ Portable personal development environment with .NET 10, Zsh, tmux, and practical
 
 - Base image: `mcr.microsoft.com/dotnet/sdk:10.0-preview`
 - Shell/tools: `zsh`, `tmux`, `git` (latest), `curl`, `jq`, `ripgrep` (latest), `fd`, `fzf` (latest), `zoxide`, `neovim` (latest)
+- Zsh UX: `zsh-autosuggestions`, `zsh-syntax-highlighting`, `fzf` key-bindings/completion
 - CLI/runtime: `nodejs`, `npm`, `pnpm`, `gh`, `opencode`, `codex`, `copilot` (global)
 - TypeScript baseline: `typescript`, `tsx`, `@types/node`, `eslint`, `prettier` (global)
 - Non-root user: `dev`
@@ -114,6 +115,7 @@ fzf --version
 zoxide --version
 fd --version
 nvim --version | head -n 1
+zsh -ic 'echo autosuggest:$+functions[_zsh_autosuggest_start] syntax:$+functions[_zsh_highlight]'
 gh --version
 opencode --version
 codex --version

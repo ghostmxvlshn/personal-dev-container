@@ -47,4 +47,17 @@ if [[ -f "${HOME}/.zshrc" ]] && ! grep -q "zoxide init zsh" "${HOME}/.zshrc"; th
   log "Appended zoxide init to .zshrc"
 fi
 
+# Ensure zsh autocomplete/highlighting survives dotfiles sync
+if [[ -f "${HOME}/.zshrc" ]] && ! grep -q "zsh-autosuggestions.zsh" "${HOME}/.zshrc"; then
+  {
+    echo ""
+    echo "# zsh quality-of-life"
+    echo "source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    echo "source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    echo "[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh"
+    echo "[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh"
+  } >> "${HOME}/.zshrc"
+  log "Appended autosuggestions/syntax-highlighting/fzf to .zshrc"
+fi
+
 log "Done"
