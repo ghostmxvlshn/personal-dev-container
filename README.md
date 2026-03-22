@@ -6,6 +6,7 @@ Portable personal development environment with .NET 10, Zsh, tmux, and practical
 
 - Base image: `mcr.microsoft.com/dotnet/sdk:10.0-preview`
 - Shell/tools: `zsh`, `tmux`, `git`, `curl`, `jq`, `ripgrep`, `fd`, `fzf`, `neovim`
+- CLI/runtime: `nodejs`, `npm`, `openclaw` (global)
 - Non-root user: `dev`
 - VS Code Dev Containers support
 
@@ -109,6 +110,7 @@ tmux -V
 rg --version
 fd --version
 nvim --version | head -n 1
+openclaw --version
 git config --global --list
 ```
 

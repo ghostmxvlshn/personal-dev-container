@@ -9,6 +9,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     zsh tmux git curl wget jq unzip zip \
     ripgrep fd-find fzf neovim ca-certificates sudo \
+    nodejs npm \
+    && npm install -g openclaw@latest \
     && rm -rf /var/lib/apt/lists/*
 
 RUN if ! getent group ${USER_GID} >/dev/null; then groupadd --gid ${USER_GID} ${USERNAME}; fi \
