@@ -118,6 +118,12 @@ copilot --version
 git config --global --list
 ```
 
+## CI build check
+
+- GitHub Actions workflow: `.github/workflows/docker-weekly-build.yml`
+- Runs weekly (Monday) + manual trigger via **Run workflow**
+- Purpose: fail fast if latest upstream tool downloads break
+
 ## Optional: oh-my-zsh
 
 Run this inside the container if you want it:

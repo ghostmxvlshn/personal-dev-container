@@ -1,0 +1,29 @@
+name: Weekly Dev Container Build Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    # Every Monday at 08:00 UTC
+    - cron: "0 8 * * 1"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build dev container image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: .devcontainer/Dockerfile
+          push: false
+          load: false
+          tags: personal-dev-container:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
