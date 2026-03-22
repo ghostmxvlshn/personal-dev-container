@@ -4,7 +4,7 @@ Portable personal development environment with .NET 10, Zsh, tmux, and practical
 
 ## Included
 
-- Base image: `mcr.microsoft.com/dotnet/sdk:10.0-preview`
+- Base image: `mcr.microsoft.com/dotnet/sdk:10.0`
 - Shell/tools: `zsh`, `tmux`, `git` (latest), `curl`, `jq`, `ripgrep` (latest), `fd`, `fzf` (latest), `zoxide`, `neovim` (latest)
 - Zsh UX: `zsh-autosuggestions`, `zsh-syntax-highlighting`, `fzf` key-bindings/completion
 - CLI/runtime: `nodejs`, `npm`, `pnpm`, `gh`, `opencode`, `codex`, `copilot` (global)

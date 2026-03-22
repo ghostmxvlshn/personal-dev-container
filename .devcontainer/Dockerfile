@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0-preview
+FROM mcr.microsoft.com/dotnet/sdk:10.0
 
 ARG USERNAME=dev
 ARG USER_UID=1000
