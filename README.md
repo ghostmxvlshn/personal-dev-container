@@ -130,6 +130,29 @@ git config --global --list
 - Runs weekly (Monday) + manual trigger via **Run workflow**
 - Purpose: fail fast if latest upstream tool downloads break
 
+## Dotfiles auto-sync (tmux + shell)
+
+By default, container startup will clone/pull and apply dotfiles from:
+
+- `https://github.com/mxvoloshin/dotfiles`
+
+Applied files:
+
+- `.tmux.conf` → `~/.tmux.conf`
+- `.zshrc` → `~/.zshrc`
+- `.ashrc` → `~/.ashrc` (if present in repo)
+
+Behavior:
+
+- On first create: clone + apply
+- On every container start: pull latest + re-apply symlinks
+
+Override repo URL:
+
+```bash
+export DOTFILES_REPO="https://github.com/<you>/<dotfiles>.git"
+```
+
 ## Optional: oh-my-zsh
 
 Run this inside the container if you want it:
