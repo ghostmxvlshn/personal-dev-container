@@ -42,8 +42,11 @@ RUN set -eux; \
     tar -xzf /tmp/fzf.tar.gz -C /usr/local/bin fzf; \
     chmod +x /usr/local/bin/fzf; \
     \
-    # CLIs
-    npm install -g opencode-ai@latest @openai/codex@latest @github/copilot@latest; \
+    # CLIs + TypeScript baseline tooling
+    npm install -g \
+      opencode-ai@latest @openai/codex@latest @github/copilot@latest \
+      pnpm@latest typescript@latest tsx@latest @types/node@latest \
+      eslint@latest prettier@latest; \
     \
     # Cleanup
     rm -rf /var/lib/apt/lists/* /tmp/*
