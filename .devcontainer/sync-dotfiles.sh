@@ -37,4 +37,14 @@ apply_link "${DOTFILES_DIR}/.zshrc" "${HOME}/.zshrc"
 # Optional ash config (if you add it later)
 apply_link "${DOTFILES_DIR}/.ashrc" "${HOME}/.ashrc"
 
+# Ensure zoxide init exists in active zshrc
+if [[ -f "${HOME}/.zshrc" ]] && ! grep -q "zoxide init zsh" "${HOME}/.zshrc"; then
+  {
+    echo ""
+    echo "# zoxide"
+    echo "eval \"$(zoxide init zsh)\""
+  } >> "${HOME}/.zshrc"
+  log "Appended zoxide init to .zshrc"
+fi
+
 log "Done"

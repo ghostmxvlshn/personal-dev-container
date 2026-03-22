@@ -5,7 +5,7 @@ Portable personal development environment with .NET 10, Zsh, tmux, and practical
 ## Included
 
 - Base image: `mcr.microsoft.com/dotnet/sdk:10.0-preview`
-- Shell/tools: `zsh`, `tmux`, `git` (latest), `curl`, `jq`, `ripgrep` (latest), `fd`, `fzf` (latest), `neovim` (latest)
+- Shell/tools: `zsh`, `tmux`, `git` (latest), `curl`, `jq`, `ripgrep` (latest), `fd`, `fzf` (latest), `zoxide`, `neovim` (latest)
 - CLI/runtime: `nodejs`, `npm`, `pnpm`, `gh`, `opencode`, `codex`, `copilot` (global)
 - TypeScript baseline: `typescript`, `tsx`, `@types/node`, `eslint`, `prettier` (global)
 - Non-root user: `dev`
@@ -111,6 +111,7 @@ tmux -V
 git --version
 rg --version
 fzf --version
+zoxide --version
 fd --version
 nvim --version | head -n 1
 gh --version

@@ -20,4 +20,13 @@ if ! grep -q "alias ll='ls -la'" ~/.zshrc 2>/dev/null; then
   } >> ~/.zshrc
 fi
 
+# Ensure zoxide is initialized for zsh
+if ! grep -q "zoxide init zsh" ~/.zshrc 2>/dev/null; then
+  {
+    echo ""
+    echo "# zoxide"
+    echo "eval \"$(zoxide init zsh)\""
+  } >> ~/.zshrc
+fi
+
 echo "post-create complete ✅"
