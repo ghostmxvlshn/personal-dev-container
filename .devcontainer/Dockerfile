@@ -1,7 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0
 
 ARG USERNAME=dev
-ARG USER_UID=1000
+ARG USER_UID=1001
 ARG USER_GID=${USER_UID}
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -15,7 +15,7 @@ RUN set -eux; \
       build-essential gettext libssl-dev libcurl4-gnutls-dev libexpat1-dev zlib1g-dev; \
     \
     # Git (latest stable tag from upstream)
-    GIT_VERSION="$(git ls-remote --tags --refs https://github.com/git/git.git | awk -F/ '/refs\/tags\/v[0-9]/{print $3}' | sed 's/^v//' | sort -V | tail -n1)"; \
+    GIT_VERSION="$(git ls-remote --tags --refs https://github.com/git/git.git | awk -F/ '/refs\/tags\/v[0-9]+\.[0-9]+\.[0-9]+$/{print $3}' | sed 's/^v//' | sort -V | tail -n1)"; \
     curl -fsSL "https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz" -o /tmp/git.tar.gz; \
     tar -xzf /tmp/git.tar.gz -C /tmp; \
     cd "/tmp/git-${GIT_VERSION}"; \
