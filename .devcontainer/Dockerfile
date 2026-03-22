@@ -9,13 +9,13 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
-      zsh tmux curl wget jq unzip zip ca-certificates sudo \
+      zsh tmux git curl wget jq unzip zip ca-certificates sudo \
       fd-find nodejs npm gh zoxide \
       zsh-autosuggestions zsh-syntax-highlighting \
       build-essential gettext libssl-dev libcurl4-gnutls-dev libexpat1-dev zlib1g-dev; \
     \
-    # Git (latest)
-    GIT_VERSION="$(curl -fsSL https://api.github.com/repos/git/git/releases/latest | jq -r '.tag_name' | sed 's/^v//')"; \
+    # Git (latest stable tag from upstream)
+    GIT_VERSION="$(git ls-remote --tags --refs https://github.com/git/git.git | awk -F/ '/refs\/tags\/v[0-9]/{print $3}' | sed 's/^v//' | sort -V | tail -n1)"; \
     curl -fsSL "https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz" -o /tmp/git.tar.gz; \
     tar -xzf /tmp/git.tar.gz -C /tmp; \
     cd "/tmp/git-${GIT_VERSION}"; \
