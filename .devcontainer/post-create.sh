@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Ensure Oh My Zsh exists (many dotfiles expect it)
+if [[ ! -d "${HOME}/.oh-my-zsh" ]]; then
+  echo "Installing Oh My Zsh..."
+  RUNZSH=no CHSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" || {
+    echo "Warning: Oh My Zsh install failed (network/auth). Continuing."
+  }
+fi
+
 # Set git identity from environment (preferred)
 if [[ -n "${GIT_USER_NAME:-}" ]]; then
   git config --global user.name "${GIT_USER_NAME}"
