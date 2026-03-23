@@ -16,6 +16,12 @@ ARG TSX_VERSION=4.21.0
 ARG ESLINT_VERSION=10.1.0
 ARG PRETTIER_VERSION=3.8.1
 
+# Pin system/tooling versions (avoid "latest" lookups during build)
+ARG GIT_VERSION=2.49.0
+ARG NVIM_TAG=v0.11.4
+ARG RIPGREP_VERSION=15.1.0
+ARG FZF_VERSION=0.66.0
+
 RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends \
@@ -31,32 +37,27 @@ RUN set -eux; \
     apt-get update; \
     apt-get install -y --no-install-recommends nodejs; \
     \
-    # Git (latest stable tag from upstream)
-    GIT_VERSION="$(git ls-remote --tags --refs https://github.com/git/git.git | awk -F/ '/refs\/tags\/v[0-9]+\.[0-9]+\.[0-9]+$/{print $3}' | sed 's/^v//' | sort -V | tail -n1)"; \
+    # Git (pinned upstream release)
     curl -fsSL "https://www.kernel.org/pub/software/scm/git/git-${GIT_VERSION}.tar.gz" -o /tmp/git.tar.gz; \
     tar -xzf /tmp/git.tar.gz -C /tmp; \
     cd "/tmp/git-${GIT_VERSION}"; \
     make prefix=/usr/local all -j"$(nproc)"; \
     make prefix=/usr/local install; \
     \
-    # Neovim (latest release binary)
-    NVIM_TAG="$(curl -fsSL https://api.github.com/repos/neovim/neovim/releases/latest | jq -r '.tag_name')"; \
+    # Neovim (pinned release binary)
     curl -fsSL "https://github.com/neovim/neovim/releases/download/${NVIM_TAG}/nvim-linux-x86_64.tar.gz" -o /tmp/nvim.tar.gz; \
     rm -rf /opt/nvim; \
     mkdir -p /opt/nvim; \
     tar -xzf /tmp/nvim.tar.gz --strip-components=1 -C /opt/nvim; \
     ln -sf /opt/nvim/bin/nvim /usr/local/bin/nvim; \
     \
-    # ripgrep (latest release binary)
-    RG_ASSET="$(curl -fsSL https://api.github.com/repos/BurntSushi/ripgrep/releases/latest | jq -r '.assets[] | select(.name | test("x86_64-unknown-linux-musl.tar.gz$")) | .browser_download_url' | head -n1)"; \
-    curl -fsSL "$RG_ASSET" -o /tmp/rg.tar.gz; \
+    # ripgrep (pinned release binary)
+    curl -fsSL "https://github.com/BurntSushi/ripgrep/releases/download/${RIPGREP_VERSION}/ripgrep-${RIPGREP_VERSION}-x86_64-unknown-linux-musl.tar.gz" -o /tmp/rg.tar.gz; \
     tar -xzf /tmp/rg.tar.gz -C /tmp; \
-    RG_DIR="$(find /tmp -maxdepth 1 -type d -name 'ripgrep-*' | head -n1)"; \
-    install -m 0755 "$RG_DIR/rg" /usr/local/bin/rg; \
+    install -m 0755 "/tmp/ripgrep-${RIPGREP_VERSION}-x86_64-unknown-linux-musl/rg" /usr/local/bin/rg; \
     \
-    # fzf (latest release binary)
-    FZF_ASSET="$(curl -fsSL https://api.github.com/repos/junegunn/fzf/releases/latest | jq -r '.assets[] | select(.name | test("linux_amd64.tar.gz$")) | .browser_download_url' | head -n1)"; \
-    curl -fsSL "$FZF_ASSET" -o /tmp/fzf.tar.gz; \
+    # fzf (pinned release binary)
+    curl -fsSL "https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tar.gz" -o /tmp/fzf.tar.gz; \
     tar -xzf /tmp/fzf.tar.gz -C /usr/local/bin fzf; \
     chmod +x /usr/local/bin/fzf; \
     \
