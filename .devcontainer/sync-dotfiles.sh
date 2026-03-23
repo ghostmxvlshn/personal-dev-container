@@ -6,6 +6,42 @@ DOTFILES_DIR="${HOME}/.dotfiles"
 
 log() { echo "[dotfiles-sync] $*"; }
 
+install_omz_plugin_if_missing() {
+  local plugin_name="$1"
+  local plugin_repo="$2"
+  local target_dir="${HOME}/.oh-my-zsh/custom/plugins/${plugin_name}"
+
+  if [[ -d "${target_dir}" ]]; then
+    return 0
+  fi
+
+  if [[ ! -d "${HOME}/.oh-my-zsh" ]]; then
+    log "Oh My Zsh not found; skip plugin install for ${plugin_name}"
+    return 0
+  fi
+
+  log "Installing OMZ plugin ${plugin_name}"
+  git clone --depth 1 "${plugin_repo}" "${target_dir}" >/dev/null 2>&1 || {
+    log "Failed to install ${plugin_name} (network/auth). Continuing."
+  }
+}
+
+install_expected_omz_plugins() {
+  # Install plugins your dotfiles use when missing
+  install_omz_plugin_if_missing "zsh-autosuggestions" "https://github.com/zsh-users/zsh-autosuggestions.git"
+  install_omz_plugin_if_missing "zsh-completions" "https://github.com/zsh-users/zsh-completions.git"
+  install_omz_plugin_if_missing "zsh-history-substring-search" "https://github.com/zsh-users/zsh-history-substring-search.git"
+  install_omz_plugin_if_missing "zsh-syntax-highlighting" "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+}
+
+guard_custom_plugin_sources() {
+  local zshrc="${HOME}/.zshrc"
+  [[ -f "${zshrc}" ]] || return 0
+
+  # Convert hard plugin source lines to guarded ones so startup doesn't fail
+  sed -i.bak -E 's|^source (\$ZSH/custom/plugins/.+)$|[ -f \1 ] \&\& source \1|g' "${zshrc}" || true
+}
+
 safe_append_once() {
   local file="$1"
   local marker="$2"
@@ -104,6 +140,10 @@ apply_link "${DOTFILES_DIR}/.zshrc" "${HOME}/.zshrc"
 
 # Optional ash config (if you add it later)
 apply_link "${DOTFILES_DIR}/.ashrc" "${HOME}/.ashrc"
+
+# Make OMZ plugin expectations match your dotfiles and avoid hard source failures
+install_expected_omz_plugins
+guard_custom_plugin_sources
 
 # Add safe guards/idempotent defaults and validate
 ensure_safe_zshrc_defaults
